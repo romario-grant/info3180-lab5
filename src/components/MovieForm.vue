@@ -3,7 +3,10 @@ import { ref, onMounted } from "vue";
 
 let csrf_token = ref("");
 
-// Fetch the CSRF token from Flask as soon as the component is mounted 
+// Bonus: Variables to track feedback state
+let displaySuccess = ref(false);
+let errors = ref([]);
+
 function getCsrfToken() {
     fetch('/api/v1/csrf-token')
         .then((response) => response.json())
@@ -17,31 +20,53 @@ onMounted(() => {
 });
 
 function saveMovie() {
-    let movieForm = document.getElementById('movieForm'); 
-    let form_data = new FormData(movieForm); 
+    // Reset feedback before every new submission
+    displaySuccess.value = false;
+    errors.value = [];
+
+    let movieForm = document.getElementById('movieForm');
+    let form_data = new FormData(movieForm);
 
     fetch("/api/v1/movies", {
         method: 'POST',
-        body: form_data, 
+        body: form_data,
         headers: {
-            'X-CSRFToken': csrf_token.value 
+            'X-CSRFToken': csrf_token.value
         }
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data); 
+        if (data.errors) {
+            // Bonus: If Flask returns validation errors, show them
+            errors.value = data.errors;
+        } else {
+            // Bonus: If successful, show the success alert and clear the form
+            displaySuccess.value = true;
+            movieForm.reset();
+        }
     })
     .catch(error => {
-        console.log(error); 
+        console.log(error);
     });
 }
 </script>
 
 <template>
     <form id="movieForm" @submit.prevent="saveMovie">
-        <div class="form-group mb-3">
+        
+        <div v-if="displaySuccess" class="alert alert-success mt-2">
+            File Upload Successful
+        </div>
+
+        <div v-if="errors.length > 0" class="alert alert-danger mt-2">
+            <ul class="mb-0">
+                <li v-for="error in errors" :key="error">{{ error }}</li>
+            </ul>
+        </div>
+
+        <div class="form-group mb-3 mt-3">
             <label for="title" class="form-label">Movie Title</label>
-            <input type="text" name="title" class="form-control" /> 
+            <input type="text" name="title" class="form-control" />
         </div>
         <div class="form-group mb-3">
             <label for="description" class="form-label">Description</label>
