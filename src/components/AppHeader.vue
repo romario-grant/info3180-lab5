@@ -40,7 +40,6 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style scoped>
-/* Navbar offset for fixed-top */
 body {
   padding-top: 5rem;
 }

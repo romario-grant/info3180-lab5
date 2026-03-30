@@ -2,8 +2,6 @@
 import { ref, onMounted } from "vue";
 
 let csrf_token = ref("");
-
-// Bonus: Variables to track feedback state
 let displaySuccess = ref(false);
 let errors = ref([]);
 
@@ -20,7 +18,6 @@ onMounted(() => {
 });
 
 function saveMovie() {
-    // Reset feedback before every new submission
     displaySuccess.value = false;
     errors.value = [];
 
@@ -37,10 +34,8 @@ function saveMovie() {
     .then(response => response.json())
     .then(data => {
         if (data.errors) {
-            // Bonus: If Flask returns validation errors, show them
             errors.value = data.errors;
         } else {
-            // Bonus: If successful, show the success alert and clear the form
             displaySuccess.value = true;
             movieForm.reset();
         }
@@ -73,8 +68,8 @@ function saveMovie() {
             <textarea name="description" class="form-control"></textarea>
         </div>
         <div class="form-group mb-3">
-            <label for="poster" class="form-label">Movie Poster</label>
-            <input type="file" name="poster" class="form-control" />
+            <label for="poster" class="form-label d-block">Photo Upload</label>
+            <input type="file" name="poster" id="poster" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

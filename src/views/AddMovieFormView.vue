@@ -4,7 +4,7 @@ import MovieForm from "@/components/MovieForm.vue";
 
 <template>
     <div class="container mt-5">
-        <h1>Add Movie</h1>
+        <h1>Upload Form</h1>
         <MovieForm />
     </div>
 </template>
