@@ -22,6 +22,12 @@
             <li class="nav-item">
               <RouterLink class="nav-link" to="/about">About</RouterLink>
             </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/movies">Movies</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/movies/create">Add Movie</RouterLink>
+            </li>
           </ul>
         </div>
       </div>
@@ -33,6 +39,9 @@
 import { RouterLink } from "vue-router";
 </script>
 
-<style>
-/* Add any component specific styles here */
+<style scoped>
+/* Navbar offset for fixed-top */
+body {
+  padding-top: 5rem;
+}
 </style>
